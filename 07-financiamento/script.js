@@ -1,45 +1,68 @@
 'use strict'
 
-function simular() {
-  // 1. Pegar valores
-  let valor = parseFloat(document.getElementById("valor").value);
-  let taxa = parseFloat(document.getElementById("taxa").value) / 100;
-  let parcelas = parseInt(document.getElementById("parcelas").value);
-  let parcela = parseFloat(document.getElementById("parcela").value);
 
-  let saldoDevedor = valor;
+function CriarLinha(linha) {
+  const tabela = document.getElementById('tabela')
+  const tr = document.createElement('tr')
 
-  let tbody = document.getElementById("tabela-body");
+  const tdMes = document.createElement('td')
+  tdMes.textContent = linha.mes
 
-  // 2. Limpar tabela
-  tbody.innerHTML = "";
+  const tdJurosMes = document.createElement('td')
+  tdJurosMes.textContent = linha.Juros
+  tdJurosMes.className = 'col-juros'
 
-  // 3. Loop mês a mês
-  for (let mes = 1; mes <= parcelas; mes++) {
+  const tdParcela = document.createElement('td')
+  tdParcela.textContent = linha.Parcela
 
-    // 4. Cálculos
-    let jurosMes = saldoDevedor * taxa;
-    let totalMes = parcela + jurosMes;
-    saldoDevedor = saldoDevedor + jurosMes - parcela;
+  const tdTotalMes = document.createElement('td')
+  tdTotalMes.textContent = linha.TotalMes
+  tdTotalMes.className = 'col-total'
 
-    // Evitar saldo negativo
-    if (saldoDevedor < 0) saldoDevedor = 0;
+  const tdSaldoDevedor = document.createElement('td')
+  tdSaldoDevedor.textContent = linha.SaldoDevedor
+  tdSaldoDevedor.className = 'col-saldo'
 
-    // 5. Criar linha
-    let tr = document.createElement("tr");
+  tr.appendChild(tdMes)
+  tr.appendChild(tdJurosMes)
+  tr.appendChild(tdParcela)
+  tr.appendChild(tdTotalMes)
+  tr.appendChild(tdSaldoDevedor)
 
-    tr.innerHTML = `
-      <td>${mes}</td>
-      <td class="col-juros">R$ ${jurosMes.toFixed(2)}</td>
-      <td>R$ ${parcela.toFixed(2)}</td>
-      <td class="col-total">R$ ${totalMes.toFixed(2)}</td>
-      <td class="col-saldo">R$ ${saldoDevedor.toFixed(2)}</td>
-    `;
+  tabela.appendChild(tr)
 
-    // 6. Adicionar na tabela
-    tbody.appendChild(tr);
 
-    // Se já quitou, parar o loop
-    if (saldoDevedor === 0) break;
+
+}
+
+
+function SimularFinanciamento() {
+  const ValorTotal = Number(document.getElementById('valor-total').value)
+  const TaxaJuros = Number(document.getElementById('taxa-juros').value)
+  const NumeroParcelas = Number(document.getElementById('numero-parcelas').value)
+
+  let SaldoDevedor = ValorTotal
+  tabela.replaceChildren ()
+  for (let i = 1; i <= NumeroParcelas; i++) {
+
+
+
+
+    const jurosMes = SaldoDevedor * TaxaJuros / 100
+    const parcela = ValorTotal / NumeroParcelas
+    const totalMes = parcela + jurosMes
+    SaldoDevedor = SaldoDevedor + jurosMes - parcela
+
+
+
+    const linha = {
+      'mes': i,
+      'Juros': jurosMes.toFixed(2),
+      'parcela': parcela.toFixed(2),
+      'TotalMes': totalMes.toFixed(2),
+      'SaldoDevedor': SaldoDevedor.toFixed(2)
+    }
+    CriarLinha(linha)
   }
+
 }
