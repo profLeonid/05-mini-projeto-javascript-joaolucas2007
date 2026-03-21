@@ -6,7 +6,7 @@ function gerarContagem () {
     const salto = document.getElementById ('salto')
     const lista = document.getElementById('lista')
 
-      lista.innerHTML = ''
+      lista.replaceChildren()
 
     for (let i = Number(inicio.value); i <= Number(fim.value); i = i+ Number(salto.value) ){
         const itemlista = document.createElement ('li')

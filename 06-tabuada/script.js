@@ -5,7 +5,7 @@ function GerarTabuada() {
     const corpoTabela = document.getElementById('corpo-tabela')
 
     // 👉 limpa a tabela antes de gerar novamente
-    corpoTabela.innerHTML = ''
+    corpoTabela.replaceChildren()
 
     const valor = Number(numero.value)
 
